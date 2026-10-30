@@ -1,8 +1,8 @@
 Contact: mailto:2516016025@students.mcbu.edu.tr
 Expires: 2027-12-31T23:59:00.000Z
 Preferred-Languages: tr, en
-Canonical: https://teknoloji-radari.muhammetcatan.workers.dev/.well-known/security.txt
-Policy: https://teknoloji-radari.muhammetcatan.workers.dev/security-policy
+Canonical: https://teknoloji-radari.muhammedeyupcatan.workers.dev/.well-known/security.txt
+Policy: https://teknoloji-radari.muhammedeyupcatan.workers.dev/security-report.pdf
 
 # Bu dosya RFC 9116 standardına uygundur.
 # Güvenlik açıklarını lütfen yukarıdaki e-posta adresine bildirin.

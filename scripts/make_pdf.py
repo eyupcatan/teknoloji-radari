@@ -121,6 +121,8 @@ def generate_pdf():
     # BAŞLIK
     story.append(Paragraph("GÜVENLİK VE TEHDİT MODELLEME RAPORU", title_style))
     story.append(Paragraph("<b>Ürün:</b> Teknoloji Beceri Talep Radarı & Canlı Etiket Atlası<br/>"
+                           "<b>Canlı Dağıtım URL:</b> <font color='#1F4E79'><u>https://teknoloji-radari.muhammedeyupcatan.workers.dev</u></font><br/>"
+                           "<b>GitHub Deposu:</b> <font color='#1F4E79'><u>https://github.com/eyupcatan/teknoloji-radari</u></font><br/>"
                            "<b>Öğrenci:</b> Muhammet Eyüp Çatan · <b>Öğrenci No:</b> 2516016025<br/>"
                            "<b>Öğretim Elemanı:</b> Öğr. Gör. Osman Can Çetlenbik · <b>Dönem:</b> 2026-2027 Güz", subtitle_style))
     story.append(Spacer(1, 8))
@@ -274,3 +276,4 @@ def generate_pdf():
 
 if __name__ == '__main__':
     generate_pdf()
+
