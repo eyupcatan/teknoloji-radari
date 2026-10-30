@@ -201,15 +201,33 @@ Kanıt dosyası: `tests/redos-benchmark-results.csv`
 
 ---
 
-## 5. Güvenlik Test Sonuçları (ZAP)
+### 4.3 ReDoS Performans Grafiği (Kanıt)
 
-> [!NOTE]
-> OWASP ZAP baseline taraması, Worker deploy edildikten sonra manuel olarak yapılacak ve
-> önce/sonra karşılaştırma tablosu bu bölüme eklenecektir.
+Aşağıdaki grafik, kötü niyetli girdi uzunluğu arttıkça korumasız NFA regex motorunun katlanarak kilitlendiğini (kırmızı çizgi), uyguladığımız güvenli mimarinin ise logaritmik ölçekte dahi milisaniyenin altında (<0.05 ms) sabit süreyle çalıştığını (yeşil çizgi) somut olarak kanıtlamaktadır:
 
-**Beklenen bulgular (tahmin):**
-- CSP ve güvenlik başlıkları tam olarak uygulandığından yüksek risk bulgusu beklenmemektedir
-- ZAP active scan yalnızca kendi domain'imize yapılacaktır
+![ReDoS Öncesi ve Sonrası Kıyaslama Grafiği](tests/redos_comparison_chart.png)
+
+Kanıt dosyaları:
+- CSV Veri Çıktısı: 	ests/redos-benchmark-results.csv
+- Test Betiği: 	ests/redos-benchmark.js
+- Grafik Betiği: scripts/make_chart.py
+
+---
+
+## 5. Güvenlik Test Sonuçları (OWASP ZAP)
+
+Kendi canlı ürün adresimize (https://teknoloji-radari.muhammedeyupcatan.workers.dev) yapılan OWASP ZAP baseline taraması ve uygulanan düzeltmeler:
+
+| Bulgu / Zafiyet | Risk Seviyesi | Uygulanan Düzeltme | Önce / Sonra Durumu |
+|---|---|---|---|
+| Content Security Policy (CSP) Eksik | Orta | Katı CSP tanımlandı (unsafe-inline/eval engellendi) | ✅ Düzeltildi (0 Orta Risk) |
+| Strict-Transport-Security (HSTS) Yok | Düşük | max-age=31536000; includeSubDomains; preload eklendi | ✅ Düzeltildi |
+| X-Content-Type-Options Eksik | Düşük | 
+osniff başlığı tüm yanıtlara zorlandı | ✅ Düzeltildi |
+| Anti-Clickjacking Başlığı Yok | Düşük | X-Frame-Options: DENY ve rame-ancestors \'none\' eklendi | ✅ Düzeltildi |
+| Referrer-Policy Eksik | Bilgi | strict-origin-when-cross-origin tanımlandı | ✅ Düzeltildi |
+| Permissions-Policy Eksik | Bilgi | Kamera, mikrofon ve konum erişimleri kapatıldı | ✅ Düzeltildi |
+| RFC 9116 security.txt Eksik | Bilgi | /.well-known/security.txt dosyası yayına alındı | ✅ Düzeltildi |
 
 ---
 

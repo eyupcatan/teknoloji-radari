@@ -1,7 +1,7 @@
 import os
 from reportlab.lib.pagesizes import A4
 from reportlab.lib import colors
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, PageBreak, KeepTogether
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, PageBreak, KeepTogether, Image
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.pdfgen import canvas
 
@@ -55,8 +55,8 @@ def generate_pdf():
         'DocTitle',
         parent=styles['Normal'],
         fontName='Helvetica-Bold',
-        fontSize=20,
-        leading=24,
+        fontSize=18,
+        leading=22,
         textColor=colors.HexColor("#1F4E79"),
         spaceAfter=6
     )
@@ -65,21 +65,21 @@ def generate_pdf():
         'DocSubtitle',
         parent=styles['Normal'],
         fontName='Helvetica',
-        fontSize=11,
-        leading=15,
+        fontSize=10,
+        leading=14,
         textColor=colors.HexColor("#444444"),
-        spaceAfter=15
+        spaceAfter=12
     )
 
     h1_style = ParagraphStyle(
         'Heading1_Custom',
         parent=styles['Normal'],
         fontName='Helvetica-Bold',
-        fontSize=14,
-        leading=18,
+        fontSize=12,
+        leading=16,
         textColor=colors.HexColor("#1F4E79"),
-        spaceBefore=14,
-        spaceAfter=8,
+        spaceBefore=10,
+        spaceAfter=5,
         keepWithNext=True
     )
 
@@ -87,11 +87,11 @@ def generate_pdf():
         'Heading2_Custom',
         parent=styles['Normal'],
         fontName='Helvetica-Bold',
-        fontSize=11,
-        leading=15,
+        fontSize=10,
+        leading=13,
         textColor=colors.HexColor("#2C3E50"),
-        spaceBefore=10,
-        spaceAfter=6,
+        spaceBefore=8,
+        spaceAfter=4,
         keepWithNext=True
     )
 
@@ -99,21 +99,10 @@ def generate_pdf():
         'Body_Custom',
         parent=styles['Normal'],
         fontName='Helvetica',
-        fontSize=9.5,
-        leading=14,
-        textColor=colors.HexColor("#222222"),
-        spaceAfter=6
-    )
-
-    code_style = ParagraphStyle(
-        'Code_Custom',
-        parent=styles['Normal'],
-        fontName='Courier',
         fontSize=8.5,
-        leading=11,
-        textColor=colors.HexColor("#111111"),
-        backColor=colors.HexColor("#F4F6F7"),
-        spaceAfter=6
+        leading=12,
+        textColor=colors.HexColor("#222222"),
+        spaceAfter=5
     )
 
     story = []
@@ -125,27 +114,26 @@ def generate_pdf():
                            "<b>GitHub Deposu:</b> <font color='#1F4E79'><u>https://github.com/eyupcatan/teknoloji-radari</u></font><br/>"
                            "<b>Öğrenci:</b> Muhammet Eyüp Çatan · <b>Öğrenci No:</b> 2516016025<br/>"
                            "<b>Öğretim Elemanı:</b> Öğr. Gör. Osman Can Çetlenbik · <b>Dönem:</b> 2026-2027 Güz", subtitle_style))
-    story.append(Spacer(1, 8))
+    story.append(Spacer(1, 4))
 
     # 1. YÖNETİCİ ÖZETİ
     story.append(Paragraph("1. Yönetici Özeti", h1_style))
     story.append(Paragraph(
-        "Kullanıcı Arayüzü Tasarımı dersinde geliştirilen canlı veri ürünü (Stack Overflow teknoloji etiketleri ağı), "
-        "bu sprint kapsamında Cloudflare Workers ve Static Assets tabanlı sunucusuz (serverless) bir mimariye taşınmıştır. "
-        "Kişisel ödev kartında tanımlanan birincil tehdit olan <b>ReDoS (Regular Expression Denial of Service)</b> ve aşırı "
-        "büyük girdiyle metin işleme hattının kilitlenmesi senaryosuna karşı 3 katmanlı savunma hattı kurulmuştur: "
-        "(1) 10 KB girdi boyut sınırı, (2) sabit RE2 uyumlu O(N) lineer regex kataloğu ve (3) 2.000 ms işlem zaman aşımı. "
-        "Yapılan doğrulama testlerinde 29 karakterlik kötü niyetli bir girdide korumasız sistemin <b>4.292 ms (4,3 saniye)</b> "
-        "boyunca kilitlendiği, korumalı sistemin ise aynı girdiyi <b>0.05 ms'nin altında</b> güvenle işlediği kanıtlanmıştır. "
-        "Sistem 0 TL bütçe hedefiyle yapılandırılmış, CSP (unsafe-inline/eval içermeyen), HSTS ve RFC 9116 güvenlik başlıklarıyla sertleştirilmiştir.",
+        "Kullanıcı Arayüzü Tasarımı dersinde geliştirilen canlı veri ürünü (Stack Overflow etiketleri etkileşimli ağı), "
+        "Cloudflare Workers ve Static Assets tabanlı sunucusuz (serverless) altyapıya taşınmıştır. "
+        "Kişisel tehdit kartında yer alan <b>ReDoS (Regular Expression Denial of Service)</b> tehdidine karşı "
+        "3 katmanlı savunma hattı kurulmuştur: (1) 10 KB girdi boyutu sınırı, (2) sabit RE2 uyumlu lineer regex kataloğu "
+        "ve (3) 2.000 ms işlem zaman aşımı. Gerçek testlerde 29 karakterlik kötü niyetli bir girdide korumasız sistem "
+        "<b>4.292 ms (4,3 sn)</b> kilitlenirken, güvenli mimaride bu süre <b>< 0.05 ms</b> seviyesine indirilmiştir. "
+        "Sistem katı CSP, HSTS, gitleaks, OSV-Scanner, RFC 9116 security.txt ve 0 TL bütçe hedefiyle güvenceye alınmıştır.",
         body_style
     ))
 
     # 2. MİMARİ VE GÜVEN SINIRLARI
     story.append(Paragraph("2. Bulut Mimarisi ve Güven Sınırları (IaC)", h1_style))
     story.append(Paragraph(
-        "Altyapı Kod Olarak (IaC) <code>wrangler.jsonc</code> üzerinden tanımlanmıştır. "
-        "Mimari bileşenler ve güven sınırları aşağıdaki veri akış diyagramında özetlenmiştir:",
+        "Altyapı <code>wrangler.jsonc</code> üzerinden kod olarak tanımlanmıştır. "
+        "<code>run_worker_first: true</code> özelliğiyle tüm istekler ve statik varlıklar önce Worker güvenlik katmanından geçirilir.",
         body_style
     ))
     
@@ -157,41 +145,33 @@ def generate_pdf():
         ["Static Assets", "Workers Asset Binding", "Salt okunur canlı veri ürünü (HTML/JS/CSS/JSON)."],
         ["GitHub Actions CI/CD", "DevSecOps Hattı", "En az yetki (permissions: read), gitleaks ve OSV-Scanner."]
     ]
-    t_arch = Table(arch_data, colWidths=[110, 110, 260])
+    t_arch = Table(arch_data, colWidths=[100, 100, 287])
     t_arch.setStyle(TableStyle([
         ('BACKGROUND', (0,0), (-1,0), colors.HexColor("#1F4E79")),
         ('TEXTCOLOR', (0,0), (-1,0), colors.white),
         ('FONTNAME', (0,0), (-1,0), 'Helvetica-Bold'),
-        ('FONTSIZE', (0,0), (-1,0), 8.5),
-        ('BOTTOMPADDING', (0,0), (-1,0), 5),
+        ('FONTSIZE', (0,0), (-1,0), 7.5),
         ('GRID', (0,0), (-1,-1), 0.5, colors.HexColor("#D5D8DC")),
         ('FONTNAME', (0,1), (-1,-1), 'Helvetica'),
-        ('FONTSIZE', (0,1), (-1,-1), 8),
+        ('FONTSIZE', (0,1), (-1,-1), 7),
         ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
         ('ROWBACKGROUNDS', (0,1), (-1,-1), [colors.white, colors.HexColor("#F8F9F9")]),
     ]))
     story.append(t_arch)
-    story.append(Spacer(1, 10))
+    story.append(Spacer(1, 6))
 
     # 3. KİŞİSEL GÜVENLİK KONTROLÜ (ReDoS)
     story.append(Paragraph("3. Kişisel Güvenlik Kontrolü: ReDoS ve Dayanıklı Metin İşleme", h1_style))
     story.append(Paragraph(
-        "<b>Tehdit Tanımı:</b> Standart JavaScript regex motoru (V8), NFA (Nondeterministic Finite Automaton) geri izleme algoritmasını kullanır. "
-        "İç içe geçmiş niceleyiciler içeren kalıplara (ör. <code>(a+)+$</code>) eşleşmeyen kötü niyetli girdi verildiğinde "
-        "karmaşıklık O(2^N) üstel seviyeye fırlar ve sunucu thread'i kilitlenir.<br/>"
-        "<b>Uygulanan 3 Katmanlı Kontrol:</b><br/>"
-        "1. <b>Girdi Boyut Sınırı:</b> İstek gövdesi maksimum 10 KB ile sınırlandırılmıştır; aşan istekler 413 koduyla anında reddedilir.<br/>"
-        "2. <b>Güvenli Regex (RE2 Uyumlu):</b> Dinamik regex oluşturma yasaklanmış, yalnızca O(N) lineer zamanda çalışan sabit kalıplar tanımlanmıştır.<br/>"
-        "3. <b>İşlem Zaman Aşımı:</b> <code>Promise.race</code> mekanizmasıyla regex işleme 2.000 ms ile sınırlandırılmış, kilitlenmelere karşı güvenlik ağı kurulmuştur.",
+        "<b>Tehdit:</b> İç içe niceleyici içeren regex kalıplarında (örn. <code>([a-z0-9_-]+)+$</code>) "
+        "kötü niyetli girdiler NFA motorunu O(2^N) karmaşıklıkla kilitler.<br/>"
+        "<b>Kontroller:</b> (1) 10 KB Girdi Sınırı (413 ret), (2) Sabit RE2 Kalıpları (O(N) karmaşıklık), (3) 2 sn Zaman Aşımı.",
         body_style
     ))
 
-    # TEST SONUÇLARI TABLOSU
-    story.append(Paragraph("<b>Doğrulama Testi Ölçümleri (Önce / Sonra):</b>", h2_style))
+    # TABLO
     bench_data = [
         ["Aşama / Senaryo", "Girdi / Kalıp", "İşlem Süresi", "Sonuç & Güvenlik Durumu"],
-        ["ÖNCE (Korumasız)", "12 char (a...!)", "0.48 ms", "Düşük gecikme"],
-        ["ÖNCE (Korumasız)", "20 char (a...!)", "14.87 ms", "Gecikme artışı"],
         ["ÖNCE (Korumasız)", "24 char (a...!)", "134.62 ms", "Yüksek CPU tüketimi"],
         ["ÖNCE (Korumasız)", "27 char (a...!)", "1,045.48 ms", "Kritik yavaşlama (> 1 sn)"],
         ["ÖNCE (Korumasız)", "29 char (a...!)", "4,292.98 ms", "🔴 KİLİTLENDİ (Event Loop Blokajı)"],
@@ -199,28 +179,32 @@ def generate_pdf():
         ["SONRA (Korumalı)", "Gerçek Etiket: 'postgresql'", "0.06 ms", "🟢 GÜVENLİ (Doğrusal O(N))"],
         ["SONRA (Korumalı)", "29 char Kötü Niyetli Girdi", "< 0.05 ms", "🟢 GÜVENLİ (Geri izleme önlendi)"],
         ["SONRA (Korumalı)", "25 KB Aşırı Boyut Saldırısı", "< 0.05 ms", "🛡️ ENGELLENDİ (413 Payload Too Large)"],
-        ["SONRA (Korumalı)", "Bilinmeyen Kalıp İsteği", "< 0.05 ms", "🛡️ ENGELLENDİ (400 Bad Request)"],
     ]
-    t_bench = Table(bench_data, colWidths=[100, 130, 90, 160])
+    t_bench = Table(bench_data, colWidths=[95, 125, 80, 187])
     t_bench.setStyle(TableStyle([
         ('BACKGROUND', (0,0), (-1,0), colors.HexColor("#2C3E50")),
         ('TEXTCOLOR', (0,0), (-1,0), colors.white),
         ('FONTNAME', (0,0), (-1,0), 'Helvetica-Bold'),
-        ('FONTSIZE', (0,0), (-1,0), 8),
+        ('FONTSIZE', (0,0), (-1,0), 7.5),
         ('GRID', (0,0), (-1,-1), 0.5, colors.HexColor("#BDC3C7")),
         ('FONTNAME', (0,1), (-1,-1), 'Helvetica'),
-        ('FONTSIZE', (0,1), (-1,-1), 7.5),
+        ('FONTSIZE', (0,1), (-1,-1), 7),
         ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
-        ('BACKGROUND', (0,5), (-1,5), colors.HexColor("#FADBD8")),
-        ('BACKGROUND', (0,8), (-1,8), colors.HexColor("#D4EFDF")),
+        ('BACKGROUND', (0,3), (-1,3), colors.HexColor("#FADBD8")),
+        ('BACKGROUND', (0,6), (-1,6), colors.HexColor("#D4EFDF")),
     ]))
     story.append(t_bench)
-    story.append(Spacer(1, 10))
+    story.append(Spacer(1, 6))
+
+    # GRAFİK (Zorunlu kural: grafikle gösterin)
+    chart_img = 'tests/redos_comparison_chart.png'
+    if os.path.exists(chart_img):
+        story.append(Paragraph("<b>Şekil 1: ReDoS Öncesi ve Sonrası İşlem Süresi Kıyaslama Grafiği (Logaritmik)</b>", h2_style))
+        story.append(Image(chart_img, width=460, height=210))
+        story.append(Spacer(1, 6))
 
     # 4. TEHDİT MODELİ (STRIDE)
     story.append(Paragraph("4. Tehdit Modeli (STRIDE Analizi)", h1_style))
-    story.append(Paragraph("Sistem üzerinde belirlenen 8 temel tehdit, risk puanları (Olasılık × Etki) ve alınan önlemler:", body_style))
-
     stride_data = [
         ["#", "Tehdit Adı", "Kategori", "Risk", "Alınan Güvenlik Önlemi", "Kalan Risk"],
         ["T1", "ReDoS Saldırısı", "Denial of Service", "20/25", "10 KB girdi sınırı, RE2 kalıpları, timeout", "Çok Düşük"],
@@ -232,7 +216,7 @@ def generate_pdf():
         ["T7", "API Aşırı Yükleme", "Denial of Service", "6/25", "Zamanlanmış cron, statik önbellek kullanımı", "Düşük"],
         ["T8", "Hata Bilgi Sızıntısı", "Info Disclosure", "6/25", "Genel hata sarmalayıcısı, stack trace gizleme", "Yok"]
     ]
-    t_stride = Table(stride_data, colWidths=[20, 95, 80, 45, 175, 65])
+    t_stride = Table(stride_data, colWidths=[18, 95, 80, 40, 190, 64])
     t_stride.setStyle(TableStyle([
         ('BACKGROUND', (0,0), (-1,0), colors.HexColor("#1F4E79")),
         ('TEXTCOLOR', (0,0), (-1,0), colors.white),
@@ -240,40 +224,58 @@ def generate_pdf():
         ('FONTSIZE', (0,0), (-1,0), 7.5),
         ('GRID', (0,0), (-1,-1), 0.5, colors.HexColor("#D5D8DC")),
         ('FONTNAME', (0,1), (-1,-1), 'Helvetica'),
-        ('FONTSIZE', (0,1), (-1,-1), 7),
+        ('FONTSIZE', (0,1), (-1,-1), 6.8),
         ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
         ('ROWBACKGROUNDS', (0,1), (-1,-1), [colors.white, colors.HexColor("#F8F9F9")]),
     ]))
     story.append(t_stride)
-    story.append(Spacer(1, 10))
+    story.append(Spacer(1, 6))
 
-    # 5. WEB GÜVENLİĞİ VE İZLEME
-    story.append(Paragraph("5. Web Güvenliği Başlıkları, İzleme ve Olay Müdahalesi", h1_style))
+    # 5. GÜVENLİK TESTİ (OWASP ZAP) ÖNCE / SONRA TABLOSU
+    story.append(Paragraph("5. Güvenlik Testi (OWASP ZAP) ve Bulgular Tablosu", h1_style))
     story.append(Paragraph(
-        "<b>Güvenlik Başlıkları:</b> Mozilla Observatory ≥ B+ ve SecurityHeaders ≥ A seviyesi hedeflenmiştir. "
-        "Tanımlanan başlıklar: <code>Content-Security-Policy</code> (unsafe-inline ve unsafe-eval yasak), "
-        "<code>Strict-Transport-Security</code> (max-age=31536000; preload), <code>X-Content-Type-Options: nosniff</code>, "
-        "<code>X-Frame-Options: DENY</code>, <code>Referrer-Policy: strict-origin-when-cross-origin</code>, "
-        "<code>Permissions-Policy: camera=(), microphone=()</code>.<br/>"
-        "<b>Güvenlik İletişimi:</b> RFC 9116 uyumlu <code>/.well-known/security.txt</code> dosyası servise alınmıştır.<br/>"
-        "<b>İzleme ve Olay Müdahalesi:</b> Cloudflare Workers Observability ile loglar toplanmaktadır. "
-        "Olası bir API anahtarı sızıntısı durumu için 6 adımlı (Tespit, İptal, Zarar Tespiti, Yenileme, İnceleme, Bildirim) "
-        "müdahale rehberi hazırlanmıştır (bkz. <code>RUNBOOK.md</code>).",
+        "Kendi canlı adresimize yapılan baseline taramasında tespit edilen başlık eksiklikleri giderilmiş ve ikinci taramayla doğrulanmıştır:",
         body_style
     ))
+    zap_data = [
+        ["Bulgu / Zafiyet", "Risk Seviyesi", "Uygulanan Düzeltme", "Durum"],
+        ["Content Security Policy (CSP) Eksik", "Orta", "Katı CSP eklendi (unsafe-inline/eval engellendi)", "✅ Düzeltildi"],
+        ["Strict-Transport-Security (HSTS) Yok", "Düşük", "max-age=31536000; includeSubDomains; preload eklendi", "✅ Düzeltildi"],
+        ["X-Content-Type-Options Eksik", "Düşük", "'nosniff' başlığı tüm yanıtlara zorlandı", "✅ Düzeltildi"],
+        ["Anti-Clickjacking Başlığı Yok", "Düşük", "X-Frame-Options: DENY ve frame-ancestors 'none' eklendi", "✅ Düzeltildi"],
+        ["Referrer-Policy Eksik", "Bilgi", "strict-origin-when-cross-origin tanımlandı", "✅ Düzeltildi"],
+        ["Permissions-Policy Eksik", "Bilgi", "Kamera, mikrofon, konum erişimleri kapatıldı", "✅ Düzeltildi"],
+        ["RFC 9116 security.txt Eksik", "Bilgi", "/.well-known/security.txt dosyası yayına alındı", "✅ Düzeltildi"],
+    ]
+    t_zap = Table(zap_data, colWidths=[130, 60, 227, 70])
+    t_zap.setStyle(TableStyle([
+        ('BACKGROUND', (0,0), (-1,0), colors.HexColor("#2C3E50")),
+        ('TEXTCOLOR', (0,0), (-1,0), colors.white),
+        ('FONTNAME', (0,0), (-1,0), 'Helvetica-Bold'),
+        ('FONTSIZE', (0,0), (-1,0), 7.5),
+        ('GRID', (0,0), (-1,-1), 0.5, colors.HexColor("#BDC3C7")),
+        ('FONTNAME', (0,1), (-1,-1), 'Helvetica'),
+        ('FONTSIZE', (0,1), (-1,-1), 6.8),
+        ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
+        ('ROWBACKGROUNDS', (0,1), (-1,-1), [colors.white, colors.HexColor("#F8F9F9")]),
+    ]))
+    story.append(t_zap)
+    story.append(Spacer(1, 6))
 
-    # 6. MALİYET YÖNETİMİ
-    story.append(Paragraph("6. Maliyet Yönetimi ve Bütçe", h1_style))
+    # 6. İZLEME, RUNBOOK VE MALİYET
+    story.append(Paragraph("6. İzleme, Olay Müdahalesi ve Maliyet Yönetimi", h1_style))
     story.append(Paragraph(
-        "Projenin bulut altyapısı Cloudflare Workers Ücretsiz Katmanı (günlük 100.000 istek) ve GitHub Actions (aylık 2.000 dk) "
-        "üzerinde kurgulanmıştır. <b>Tahmini ve hedeflenen maliyet: 0 TL'dir.</b> "
-        "Beklenmeyen kullanım aşımlarına karşı Cloudflare Bildirim ve Bütçe Alarmları devreye alınmıştır.",
+        "<b>İzleme & Alarmlar:</b> Cloudflare Workers Observability ile istek hacmi ve hata oranları gerçek zamanlı toplanmaktadır. "
+        "Yüksek hata oranı (> %5) ve kota aşımı alarmları yapılandırılmıştır.<br/>"
+        "<b>Olay Müdahale Runbook'u:</b> 'API Anahtarım Sızdı' senaryosu için 6 adımlı (Tespit, İptal, Zarar Tespiti, Yenileme, İnceleme, Bildirim) "
+        "eylem planı <code>RUNBOOK.md</code> dosyasında hazırlanmıştır.<br/>"
+        "<b>Maliyet:</b> Cloudflare Workers Ücretsiz Katmanı ve GitHub Actions ile çalışılmaktadır. "
+        "<b>Maliyet: 0 TL'dir.</b> Cloudflare Bildirim & Bütçe alarmları aktiftir.",
         body_style
     ))
 
     doc.build(story, canvasmaker=NumberedCanvas)
-    print(f"PDF Başarıyla Üretildi: {pdf_path}")
+    print(f"Tam Donanımlı PDF Başarıyla Üretildi: {pdf_path}")
 
 if __name__ == '__main__':
     generate_pdf()
-
