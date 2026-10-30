@@ -1,0 +1,88 @@
+name: Security Scanning
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    # Her Pazartesi 09:00 UTC'de otomatik tarama
+    - cron: '0 9 * * 1'
+  workflow_dispatch:
+
+# En az yetki ilkesi
+permissions:
+  contents: read
+  security-events: write   # SARIF sonuçlarını GitHub Security'ye yüklemek için
+
+jobs:
+  # ────────────────────────────────────────────────────────────
+  # 1. Gizli anahtar taraması — gitleaks
+  # ────────────────────────────────────────────────────────────
+  secret-scan:
+    name: Gizli Anahtar Taraması (gitleaks)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Kaynak kodu al
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # Tüm geçmiş — hiçbir commit kaçırılmaz
+
+      - name: gitleaks taraması
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }}  # Ticari lisans yoksa kaldırılabilir
+
+  # ────────────────────────────────────────────────────────────
+  # 2. Bağımlılık güvenlik denetimi — npm audit
+  # ────────────────────────────────────────────────────────────
+  dependency-audit:
+    name: Bağımlılık Denetimi (npm audit)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Kaynak kodu al
+        uses: actions/checkout@v4
+
+      - name: Node.js kur
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Bağımlılıkları yükle
+        run: npm ci
+
+      - name: npm audit (yüksek ve kritik seviye)
+        run: npm audit --audit-level=high
+
+  # ────────────────────────────────────────────────────────────
+  # 3. OSV-Scanner — açık kaynak güvenlik açığı taraması
+  # ────────────────────────────────────────────────────────────
+  osv-scan:
+    name: OSV Taraması
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Kaynak kodu al
+        uses: actions/checkout@v4
+
+      - name: OSV-Scanner
+        uses: google/osv-scanner-action@v2
+        with:
+          scan-args: |-
+            --lockfile=package-lock.json
+            --format=sarif
+            --output=results.sarif
+
+      - name: SARIF sonuçlarını yükle
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: results.sarif
+        if: always()
+

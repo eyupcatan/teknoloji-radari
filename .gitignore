@@ -165,3 +165,11 @@ dist
 .env*
 !.env.example
 .wrangler/
+
+# Sensitive secrets & credentials
+*.pem
+*.key
+*.cert
+secrets.json
+passwords.txt
+gitleaks-report.json

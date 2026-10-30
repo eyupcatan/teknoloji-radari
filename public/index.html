@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#091519"><meta name="color-scheme" content="dark">
+<title>Etiket Atlası — Teknoloji Etiketleri Ağının Evrimi</title>
+<meta name="description" content="Stack Overflow etiket topluluklarını 2015 ve 2025’ten iki 72 saatlik kesitte keşfedin. Etkileşimli ağ, topluluk akışları ve köprü adayları.">
+<meta property="og:type" content="website"><meta property="og:locale" content="tr_TR">
+<meta property="og:title" content="Etiket Atlası — Teknoloji Etiketleri Ağının Evrimi">
+<meta property="og:description" content="İki 72 saatlik kesit. Binlerce etiket. Birlikte kullanılan teknolojilerin karşılaştırmalı haritası.">
+<meta property="og:image" content="assets/social-preview.png"><meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="style.css?v=atlas-20261027-7">
+<script defer src="vendor/d3.min.js"></script><script defer src="vendor/d3-sankey.min.js"></script><script defer src="app.js?v=atlas-20261027-8"></script>
+</head><body>
+<a class="skip-link" href="#explore">Ağ çalışma alanına geç</a>
+<header class="site-header wrap">
+<a href="#top" class="brand"><img src="assets/favicon.svg" width="32" height="32" alt=""><span>ETİKET<span class="brand-light">ATLASI</span></span></a>
+<nav aria-label="Ana gezinme"><a href="#explore">Ağ</a><a href="#transitions">Topluluklar</a><a href="#methods">Yöntem</a><a href="#downloads">Dosyalar ↗</a></nav>
+<span class="header-note"><span class="status-dot"></span>ARAŞTIRMA ATLASI / 01</span>
+</header>
+<main id="top">
+<section class="hero wrap" aria-labelledby="hero-title">
+<div class="hero-copy"><p class="eyebrow"><span class="small-line"></span> TEKNOLOJİ ETİKETLERİ AĞININ EVRİMİ</p>
+<h1 id="hero-title">Teknolojiler değişir.<br><span>Bağlantıları iz bırakır.</span></h1>
+<p class="hero-question">2015 ve 2025 kesitlerinde Stack Overflow etiket toplulukları nasıl farklılaşıyor, hangi etiketler aralarında köprü kuruyor?</p>
+<div class="hero-actions"><a class="button primary" href="#explore">Ağı keşfet <span aria-hidden="true">↘</span></a><a class="text-link" href="#methods">Araştırmanın kapsamı ↓</a></div></div>
+<div class="time-mark" aria-label="2015 ve 2025 karşılaştırması"><span class="time-caption">İKİ TARİH / İKİ KESİT</span><span class="time-year">2015</span><div class="time-thread"><span></span><i></i><span></span></div><span class="time-year second">2025</span><span class="time-bottom">6–9 OCAK · UTC</span></div>
+<p class="scope-banner"><span class="scope-icon" aria-hidden="true">i</span><span><strong>Yalnızca iki 72 saatlik kesit.</strong> Her yıl 6 Ocak 00.00–9 Ocak 00.00 UTC. Bu veriler yılların tamamını veya on yılı temsil eden bir örneklem değildir.</span></p>
+</section>
+<section class="summary wrap" aria-labelledby="summary-title">
+<div class="section-label"><h2 id="summary-title">İki pencere, farklı hacimler</h2><span>GÖZLENEN TAM AĞLAR</span></div>
+<div class="summary-row" data-summary-year="2015"><div class="summary-year">2015<span>72 saat</span></div><dl><div><dt>Soru</dt><dd>18.922</dd></div><div><dt>Etiket / düğüm</dt><dd>7.693</dd></div><div><dt>Birliktelik / kenar</dt><dd>37.771</dd></div><div><dt>Leiden topluluğu</dt><dd>164</dd></div></dl></div>
+<div class="summary-row" data-summary-year="2025"><div class="summary-year">2025<span>72 saat</span></div><dl><div><dt>Soru</dt><dd>2.070</dd></div><div><dt>Etiket / düğüm</dt><dd>2.478</dd></div><div><dt>Birliktelik / kenar</dt><dd>6.815</dd></div><div><dt>Leiden topluluğu</dt><dd>132</dd></div></dl></div>
+<p class="caption">Eşit süre, eşit soru hacmi demek değildir. Sayı farkları teknoloji kullanımındaki büyüme veya düşüş olarak okunamaz. Kaynak: <a href="files/checkpoint.csv">ara kontrol CSV</a> ve <a href="data/2015.json">2015</a> / <a href="data/2025.json">2025 ağ verisi</a>.</p>
+</section>
+<section id="explore" class="explore wrap" aria-labelledby="explore-title">
+<div class="section-heading"><div><p class="eyebrow">01 / AĞI KEŞFET</p><h2 id="explore-title">Etiketlerin birlikte kurduğu dünya.</h2></div><p>3B ağı döndürerek toplulukların derinliğini keşfedin.<br>Her bağlantı aynı soruda buluşan iki teknolojiyi gösterir.</p></div>
+<div class="workspace" id="workspace" aria-busy="true">
+<div class="toolbar">
+<fieldset class="years"><legend class="sr-only">Veri yılı</legend><button type="button" data-year="2015" aria-pressed="true">2015</button><button type="button" data-year="2025" aria-pressed="false">2025</button></fieldset>
+<form id="search-form" role="search"><label for="search">Etiket ara <span>Tüm envanter</span></label><div class="search-field"><span aria-hidden="true">⌕</span><input id="search" type="search" list="tags" placeholder="python, http, postgresql…" autocomplete="off" disabled><datalist id="tags"></datalist><button type="submit" aria-label="Etiketi ağda bul" disabled>↵</button></div></form>
+<label class="filter-field" for="community">Topluluk<select id="community" disabled><option value="all">Tüm topluluklar</option></select></label>
+<button class="reset-button" id="reset" type="button" disabled><span aria-hidden="true">↺</span> Sıfırla</button>
+</div>
+<div class="graph-status"><p id="counts" role="status" aria-live="polite">2015 verisi yükleniyor…</p><span class="subset-label">FİLTRELENMİŞ GÖRÜNÜM</span></div>
+<p id="search-message" class="search-message" role="status" hidden></p>
+<div class="graphgrid">
+<div class="graph-stage">
+<div class="graph-topline"><span><span class="status-dot"></span> 3B ETİKET BİRLİKTELİK AĞI</span><span id="view-year">2015</span></div>
+<div id="network" role="img" aria-label="Etkileşimli etiket ağı. Metinsel alternatif aşağıdaki etiket listesinde."></div>
+<div id="graph-overlay" class="graph-overlay"><span class="loader" aria-hidden="true"></span><p id="load-message">Ağ hazırlanıyor…</p><button id="retry" type="button" class="button" hidden>Yeniden dene</button></div>
+<div class="graph-navigation" role="group" aria-label="3B ağ görünümü"><button id="zoom-in" type="button" aria-label="Ağı yakınlaştır">+</button><button id="zoom-out" type="button" aria-label="Ağı uzaklaştır">−</button><button id="fit" type="button" aria-label="3B görünümün yönünü ve yakınlaştırmasını sıfırla">⤢</button></div>
+<div class="graph-bottomline"><span>SÜRÜKLE: 3B DÖNDÜR · TEKERLEK: YAKINLAŞTIR · DÜĞÜME TIKLA: ODAKLAN</span><span id="view-mode">Genel görünüm</span></div>
+</div>
+<aside id="detail" aria-label="Seçili etiketin ayrıntıları" aria-live="polite"></aside>
+</div>
+<div class="visual-key"><span><i class="size-key" aria-hidden="true"></i> Boyut = bağlantı gücü</span><span><i class="color-key" aria-hidden="true"></i> Renk = Leiden topluluğu</span><span><i class="edge-key" aria-hidden="true"></i> Kalınlık = ortak soru sıklığı</span></div>
+<div id="legend" class="community-legend" aria-label="Görünen topluluklar"></div>
+<div class="workspace-notes"><p>Görünüm en fazla <strong>350 düğüm ve 1.200 kenar</strong> gösteren bir alt kümedir. Arama, başlangıçta görünmeyen etiketleri komşularıyla açar. Paneldeki ölçüler tam ağdan gelir.</p><p><strong>Aynı renk, aynı topluluk demek değildir.</strong> Kimlikler her yıl ayrı hesaplanır. Çok sayıdaki topluluk için bazı renkler tekrar eder.</p></div>
+<details class="inventory"><summary>Etiketleri erişilebilir listede keşfet <span>Klavyeyle kullanılabilir alternatif</span></summary><div class="inventory-body"><label for="list-search">Etiket listesinde ara<input id="list-search" type="search" placeholder="Etiket adını yazın" autocomplete="off"></label><p id="list-count" role="status"></p><div id="tag-list" class="tag-list"></div><div class="list-pagination"><button id="list-prev" type="button">← Önceki</button><span id="list-page"></span><button id="list-next" type="button">Sonraki →</button></div></div></details>
+</div></section>
+<section id="transitions" class="transitions wrap" aria-labelledby="transitions-title">
+<div class="section-heading"><div><p class="eyebrow">02 / TOPLULUK AKIŞLARI</p><h2 id="transitions-title">Aynı etiketler.<br>Farklı topluluk sınırları.</h2></div><p><strong>Akışlar soru sayısını değil, iki dönemde ortak görülen etiket sayısını gösterir.</strong> Geniş bir akış, daha fazla ortak etiketi temsil eder.</p></div>
+<div class="change-strip"><div><span id="common-count">1.225</span><p>İki pencerede ortak etiket</p></div><div><span id="new-count">1.253</span><p>Yalnızca 2025 penceresinde</p></div><div><span id="absent-count">6.468</span><p>Yalnızca 2015 penceresinde</p></div></div>
+<figure class="sankey-frame"><div class="sankey-years"><span>2015 <small>ORTAK ETİKETLERİN TOPLULUĞU</small></span><span>2025 <small>ORTAK ETİKETLERİN TOPLULUĞU</small></span></div>
+<p id="sankey-status" role="status">Topluluk akışları yükleniyor…</p>
+<svg id="sankey" viewBox="0 0 1240 540" role="img" aria-labelledby="sankey-title sankey-desc"><title id="sankey-title">Ortak etiketlerin topluluklar arasındaki dağılımı</title><desc id="sankey-desc">2015 ve 2025 ağlarında ortak bulunan 1.225 etiketin topluluk dağılımı. Ayrıntılar aşağıdaki tabloda.</desc></svg>
+<figcaption>Her yılın en büyük beş topluluğu ayrı, diğerleri “Diğer” grubunda. Yalnızca tek pencerede görülen etiketler akışa dahil değildir. “Yeni” görünmek, teknolojinin o yıl doğduğu anlamına gelmez. Kaynak: <a href="data/comparison.json">karşılaştırma verisi</a>.</figcaption></figure>
+<details class="flow-details" id="flow-details"><summary>Akışları tablo olarak incele <span id="flow-total"></span></summary><div id="flow-table" class="flow-table"></div></details>
+</section>
+<section class="findings wrap" id="findings" aria-labelledby="findings-title">
+<div class="section-heading"><div><p class="eyebrow">03 / KÖPRÜ ADAYLARI</p><h2 id="findings-title">Bağlantının sayısı kadar,<br>nereye uzandığı da önemli.</h2></div><p>Katılım katsayısı, bir etiketin bağlantı gücünün farklı topluluklara nasıl dağıldığını ölçer. Tek başına yüksek bir değer, önemli bir köprü olduğunu kanıtlamaz.</p></div>
+<div class="findings-grid">
+<article class="bridge-feature"><p class="eyebrow">2025 KESİTİ / ANA HACİM EŞİĞİ</p><h3>http<span>köprü adayı</span></h3>
+<div class="bridge-stats"><div><strong>0,850</strong><span>Katılım katsayısı</span></div><div><strong>19</strong><span>Derece</span></div><div><strong>20</strong><span>Bağlantı gücü</span></div></div>
+<p><code>http</code>, derece ≥10 ve güç ≥20 eşiğinde öne çıkıyor. Gücü eşik sınırında: daha katı derece ≥20 ve güç ≥50 filtresinde listeden çıkıyor.</p>
+<p class="finding-caution">Bu, hacim eşiğine duyarlı bir adaylıktır. Kalıcı veya evrensel bir köprü rolü iddiası değildir.</p><button type="button" class="text-link" data-explore-tag="http">http etiketini ağda aç ↗</button></article>
+<article class="strict-bridges"><p class="eyebrow">2025 KESİTİ / DAHA KATI HACİM EŞİĞİ</p><h3>Hacim filtresi sıralamayı değiştiriyor.</h3><p>Derece ≥20 ve güç ≥50 koşullarında katılım katsayısına göre ilk üç aday:</p>
+<table><thead><tr><th scope="col">Etiket</th><th scope="col">P</th><th scope="col">Güç</th></tr></thead><tbody>
+<tr><th scope="row"><button data-explore-tag="postgresql">postgresql ↗</button></th><td>0,735</td><td>85</td></tr>
+<tr><th scope="row"><button data-explore-tag="docker">docker ↗</button></th><td>0,721</td><td>58</td></tr>
+<tr><th scope="row"><button data-explore-tag="amazon-web-services">amazon-web-services ↗</button></th><td>0,624</td><td>72</td></tr>
+</tbody></table><p class="caption">Kaynak: <a href="data/2025.json">2025 tam ağ ölçüleri</a>; yöntem ve eşik duyarlılığı: <a href="files/rapor.pdf#page=9">rapor, s. 9</a>. Bu sıralama nedensellik veya istatistiksel anlamlılık testi değildir.</p></article>
+</div></section>
+<section id="methods" class="methods wrap" aria-labelledby="methods-title">
+<div class="section-heading"><div><p class="eyebrow">04 / HARİTAYI OKUMAK</p><h2 id="methods-title">Ölçüler açık.<br>Sınırları da öyle.</h2></div><a class="text-link" href="files/rapor.pdf">Yöntemin tamamını oku ↗</a></div>
+<dl class="method-grid"><div><dt>01 <strong>Düğüm</strong></dt><dd>Bir Stack Overflow soru etiketi. Örneğin <code>python</code> veya <code>java</code>.</dd></div>
+<div><dt>02 <strong>Kenar ve ağırlık</strong></dt><dd>Aynı soruda birlikte kullanılan iki etiketin yönsüz bağlantısı. Ağırlık, birlikte kullanıldıkları soru sayısı.</dd></div>
+<div><dt>03 <strong>Topluluk</strong></dt><dd>Ağırlıklı Leiden yöntemiyle birlikte gruplanan etiketler. Adlar, güçlü etiketlerin teknoloji ailelerini özetleyen yorumlardır.</dd></div>
+<div><dt>04 <strong>Katılım katsayısı</strong></dt><dd><code>Pᵢ = 1 − Σc(sᵢc / sᵢ)²</code>. Güç farklı topluluklara yayıldıkça artar. Derece ve güçle birlikte okunmalı.</dd></div></dl>
+<div class="limitations"><h3>Bu harita neyi kapsıyor?</h3><p>Her yılda yalnızca 6–9 Ocak arasındaki 72 saat. Soru hacimleri farklı. API, 26 Ekim 2026’da erişilebilen soruları ve o tarihteki etiketlerini gösteriyor; geçmiş etiket sürümleri ve silinen sorular geri kurulmuyor. Gözlenen birliktelikler neden-sonuç ilişkisi kurmaz.</p></div>
+</section>
+<section id="downloads" class="downloads wrap" aria-labelledby="downloads-title">
+<div class="section-heading"><div><p class="eyebrow">05 / AÇIK ARAŞTIRMA DOSYALARI</p><h2 id="downloads-title">Haritanın arkasındaki hesaplar.</h2></div><p>Görsellerden tam ağlara: inceleyin,<br>indirin, hesapları takip edin.</p></div>
+<div class="document-links"><a href="files/rapor.pdf"><span class="file-kind">PDF / 10 SAYFA</span><strong>Araştırma raporu</strong><span>Yöntem, bulgular ve sınırlamalar <i aria-hidden="true">↗</i></span></a><a href="files/sunum.pdf"><span class="file-kind">PDF / 9 SLAYT</span><strong>Proje sunumu</strong><span>Altı dakikalık araştırma anlatısı <i aria-hidden="true">↗</i></span></a><a href="files/poster_A3.pdf"><span class="file-kind">PDF / A3</span><strong>Karşılaştırmalı ağ posteri</strong><span>İki dönemin filtrelenmiş haritası <i aria-hidden="true">↗</i></span></a></div>
+<div class="data-downloads"><div><h3>2015 tam ağı</h3><a href="files/edges_2015.csv">Kenar listesi <span>CSV ↗</span></a><a href="files/nodes_2015.csv">Düğüm envanteri <span>CSV ↗</span></a><a href="files/network_2015.graphml">Tam ağ <span>GraphML ↗</span></a><a href="files/degree_2015.png">Derece dağılımı <span>PNG ↗</span></a></div>
+<div><h3>2025 tam ağı</h3><a href="files/edges_2025.csv">Kenar listesi <span>CSV ↗</span></a><a href="files/nodes_2025.csv">Düğüm envanteri <span>CSV ↗</span></a><a href="files/network_2025.graphml">Tam ağ <span>GraphML ↗</span></a><a href="files/degree_2025.png">Derece dağılımı <span>PNG ↗</span></a></div>
+<div class="source-note"><h3>Verinin kaynağı</h3><p><a href="https://api.stackexchange.com/docs/questions" target="_blank" rel="noopener">Stack Exchange API / Stack Overflow ↗</a></p><p>Toplama: 26 Ekim 2026.<br>Kullanıcı adları, e-postalar ve soru metinleri tutulmaz.</p><a href="files/checkpoint.csv">Ara kontrol tablosu <span>CSV ↗</span></a><a href="https://stackoverflow.com/help/licensing" target="_blank" rel="noopener">Kaynak katkı lisansları ↗</a></div></div>
+</section></main>
+<footer class="wrap"><a href="#top" class="brand">ETİKET<span class="brand-light">ATLASI</span></a><p>Teknoloji Etiketleri Ağının Evrimi<br>İki kesitten hesaplanan ilişkiler. Nedensellik iddiası yok.</p><a href="#top" class="back-top">Başa dön ↑</a></footer>
+<noscript><p class="noscript">Etkileşimli ağ için JavaScript gerekir. <a href="files/rapor.pdf">Rapor</a> ve <a href="files/checkpoint.csv">veri tablosu</a> JavaScript olmadan da erişilebilir.</p></noscript>
+</body></html>

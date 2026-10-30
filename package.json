@@ -1,11 +1,14 @@
 {
   "name": "teknoloji-radari",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "deploy": "wrangler deploy",
     "dev": "wrangler dev --test-scheduled",
-    "start": "wrangler dev --test-scheduled"
+    "start": "wrangler dev --test-scheduled",
+    "benchmark": "node tests/redos-benchmark.js",
+    "audit": "npm audit --audit-level=high"
   },
   "devDependencies": {
     "wrangler": "^4.154.0"
