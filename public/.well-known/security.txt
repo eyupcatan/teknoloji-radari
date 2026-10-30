@@ -1,4 +1,4 @@
-Contact: mailto:2516016025@students.mcbu.edu.tr
+Contact: mailto:2516016025@ogr.cbu.edu.tr
 Expires: 2027-12-31T23:59:00.000Z
 Preferred-Languages: tr, en
 Canonical: https://teknoloji-radari.muhammedeyupcatan.workers.dev/.well-known/security.txt

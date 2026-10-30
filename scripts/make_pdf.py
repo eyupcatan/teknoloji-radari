@@ -78,7 +78,7 @@ def generate_pdf():
         fontSize=12,
         leading=16,
         textColor=colors.HexColor("#1F4E79"),
-        spaceBefore=10,
+        spaceBefore=12,
         spaceAfter=5,
         keepWithNext=True
     )
@@ -105,6 +105,17 @@ def generate_pdf():
         spaceAfter=5
     )
 
+    caption_style = ParagraphStyle(
+        'Caption_Custom',
+        parent=styles['Normal'],
+        fontName='Helvetica-Oblique',
+        fontSize=8,
+        leading=11,
+        textColor=colors.HexColor("#555555"),
+        spaceAfter=8,
+        alignment=1 # Center
+    )
+
     story = []
 
     # BAŞLIK
@@ -119,13 +130,14 @@ def generate_pdf():
     # 1. YÖNETİCİ ÖZETİ
     story.append(Paragraph("1. Yönetici Özeti", h1_style))
     story.append(Paragraph(
-        "Kullanıcı Arayüzü Tasarımı dersinde geliştirilen canlı veri ürünü (Stack Overflow etiketleri etkileşimli ağı), "
+        "Kullanıcı Arayüzü Tasarımı dersinde geliştirilen canlı veri ürünü (Stack Overflow teknoloji etiketleri ağı), "
         "Cloudflare Workers ve Static Assets tabanlı sunucusuz (serverless) altyapıya taşınmıştır. "
-        "Kişisel tehdit kartında yer alan <b>ReDoS (Regular Expression Denial of Service)</b> tehdidine karşı "
+        "Kişisel ödev kartında yer alan <b>ReDoS (Regular Expression Denial of Service)</b> tehdidine karşı "
         "3 katmanlı savunma hattı kurulmuştur: (1) 10 KB girdi boyutu sınırı, (2) sabit RE2 uyumlu lineer regex kataloğu "
         "ve (3) 2.000 ms işlem zaman aşımı. Gerçek testlerde 29 karakterlik kötü niyetli bir girdide korumasız sistem "
         "<b>4.292 ms (4,3 sn)</b> kilitlenirken, güvenli mimaride bu süre <b>< 0.05 ms</b> seviyesine indirilmiştir. "
-        "Sistem katı CSP, HSTS, gitleaks, OSV-Scanner, RFC 9116 security.txt ve 0 TL bütçe hedefiyle güvenceye alınmıştır.",
+        "Canlı yayın adresi SecurityHeaders.com üzerinde yapılan bağımsız denetimde en yüksek derece olan <b>A+ Skoru</b> "
+        "almıştır. Sistem 0 TL bütçe hedefi ve aktif bütçe alarmıyla güvenceye alınmıştır.",
         body_style
     ))
 
@@ -133,7 +145,7 @@ def generate_pdf():
     story.append(Paragraph("2. Bulut Mimarisi ve Güven Sınırları (IaC)", h1_style))
     story.append(Paragraph(
         "Altyapı <code>wrangler.jsonc</code> üzerinden kod olarak tanımlanmıştır. "
-        "<code>run_worker_first: true</code> özelliğiyle tüm istekler ve statik varlıklar önce Worker güvenlik katmanından geçirilir.",
+        "<code>run_worker_first: true</code> özelliğiyle tüm statik varlıklar ve API uç noktaları Worker güvenlik katmanından geçirilir.",
         body_style
     ))
     
@@ -165,11 +177,11 @@ def generate_pdf():
     story.append(Paragraph(
         "<b>Tehdit:</b> İç içe niceleyici içeren regex kalıplarında (örn. <code>([a-z0-9_-]+)+$</code>) "
         "kötü niyetli girdiler NFA motorunu O(2^N) karmaşıklıkla kilitler.<br/>"
-        "<b>Kontroller:</b> (1) 10 KB Girdi Sınırı (413 ret), (2) Sabit RE2 Kalıpları (O(N) karmaşıklık), (3) 2 sn Zaman Aşımı.",
+        "<b>Uygulanan Kontroller:</b> (1) 10 KB Girdi Sınırı (413 ret), (2) Sabit RE2 Kalıpları (O(N) karmaşıklık), (3) 2 sn Zaman Aşımı.",
         body_style
     ))
 
-    # TABLO
+    # TEST TABLOSU
     bench_data = [
         ["Aşama / Senaryo", "Girdi / Kalıp", "İşlem Süresi", "Sonuç & Güvenlik Durumu"],
         ["ÖNCE (Korumasız)", "24 char (a...!)", "134.62 ms", "Yüksek CPU tüketimi"],
@@ -194,14 +206,14 @@ def generate_pdf():
         ('BACKGROUND', (0,6), (-1,6), colors.HexColor("#D4EFDF")),
     ]))
     story.append(t_bench)
-    story.append(Spacer(1, 6))
+    story.append(Spacer(1, 4))
 
-    # GRAFİK (Zorunlu kural: grafikle gösterin)
+    # GRAFİK 1: ReDoS Kıyaslama
     chart_img = 'tests/redos_comparison_chart.png'
     if os.path.exists(chart_img):
-        story.append(Paragraph("<b>Şekil 1: ReDoS Öncesi ve Sonrası İşlem Süresi Kıyaslama Grafiği (Logaritmik)</b>", h2_style))
-        story.append(Image(chart_img, width=460, height=210))
-        story.append(Spacer(1, 6))
+        story.append(Paragraph("<b>Şekil 1: ReDoS Öncesi ve Sonrası İşlem Süresi Kıyaslama Grafiği (Logaritmik Ölçek)</b>", h2_style))
+        story.append(Image(chart_img, width=460, height=200))
+        story.append(Paragraph("Kanıt: tests/redos-benchmark-results.csv ve tests/redos_comparison_chart.png", caption_style))
 
     # 4. TEHDİT MODELİ (STRIDE)
     story.append(Paragraph("4. Tehdit Modeli (STRIDE Analizi)", h1_style))
@@ -231,20 +243,27 @@ def generate_pdf():
     story.append(t_stride)
     story.append(Spacer(1, 6))
 
-    # 5. GÜVENLİK TESTİ (OWASP ZAP) ÖNCE / SONRA TABLOSU
-    story.append(Paragraph("5. Güvenlik Testi (OWASP ZAP) ve Bulgular Tablosu", h1_style))
+    # 5. GÜVENLİK TESTİ (OWASP ZAP & SECURITYHEADERS A+)
+    story.append(Paragraph("5. Güvenlik Testi: SecurityHeaders A+ Skoru ve OWASP ZAP Bulguları", h1_style))
     story.append(Paragraph(
-        "Kendi canlı adresimize yapılan baseline taramasında tespit edilen başlık eksiklikleri giderilmiş ve ikinci taramayla doğrulanmıştır:",
+        "Canlı adresimiz (<code>https://teknoloji-radari.muhammedeyupcatan.workers.dev</code>) bağımsız güvenlik denetim platformu "
+        "<b>SecurityHeaders.com</b> üzerinden taranmış ve tüm başlık kontrollerini eksiksiz geçerek <b>A+ Derecesi</b> almıştır. "
+        "Ayrıca OWASP ZAP baseline taraması bulguları giderilmiştir:",
         body_style
     ))
+    
+    # EKRAN GÖRÜNTÜSÜ: SecurityHeaders A+
+    sh_img = 'docs/screenshots/securityheaders_A_plus.png'
+    if os.path.exists(sh_img):
+        story.append(Image(sh_img, width=470, height=210))
+        story.append(Paragraph("Şekil 2: Canlı Dağıtımın SecurityHeaders.com Test Sonucu (A+ Skoru, Tarih/Saat: 30 Oct 2026 18:18 UTC)", caption_style))
+
     zap_data = [
         ["Bulgu / Zafiyet", "Risk Seviyesi", "Uygulanan Düzeltme", "Durum"],
         ["Content Security Policy (CSP) Eksik", "Orta", "Katı CSP eklendi (unsafe-inline/eval engellendi)", "✅ Düzeltildi"],
         ["Strict-Transport-Security (HSTS) Yok", "Düşük", "max-age=31536000; includeSubDomains; preload eklendi", "✅ Düzeltildi"],
         ["X-Content-Type-Options Eksik", "Düşük", "'nosniff' başlığı tüm yanıtlara zorlandı", "✅ Düzeltildi"],
         ["Anti-Clickjacking Başlığı Yok", "Düşük", "X-Frame-Options: DENY ve frame-ancestors 'none' eklendi", "✅ Düzeltildi"],
-        ["Referrer-Policy Eksik", "Bilgi", "strict-origin-when-cross-origin tanımlandı", "✅ Düzeltildi"],
-        ["Permissions-Policy Eksik", "Bilgi", "Kamera, mikrofon, konum erişimleri kapatıldı", "✅ Düzeltildi"],
         ["RFC 9116 security.txt Eksik", "Bilgi", "/.well-known/security.txt dosyası yayına alındı", "✅ Düzeltildi"],
     ]
     t_zap = Table(zap_data, colWidths=[130, 60, 227, 70])
@@ -262,20 +281,29 @@ def generate_pdf():
     story.append(t_zap)
     story.append(Spacer(1, 6))
 
-    # 6. İZLEME, RUNBOOK VE MALİYET
-    story.append(Paragraph("6. İzleme, Olay Müdahalesi ve Maliyet Yönetimi", h1_style))
+    # 6. İZLEME, RUNBOOK VE BÜTÇE ALARMI
+    story.append(Paragraph("6. İzleme, Olay Müdahalesi ve Bütçe Alarmı", h1_style))
     story.append(Paragraph(
-        "<b>İzleme & Alarmlar:</b> Cloudflare Workers Observability ile istek hacmi ve hata oranları gerçek zamanlı toplanmaktadır. "
-        "Yüksek hata oranı (> %5) ve kota aşımı alarmları yapılandırılmıştır.<br/>"
+        "<b>Bütçe Alarmı (Maliyet = 0 TL Hedefi):</b> Cloudflare Workers ücretsiz katmanında beklenmeyen "
+        "bir maliyet oluşmasını önlemek amacıyla Cloudflare Dashboard üzerinden <b>1 USD Bütçe Alarmı (Billing Budget Alert)</b> "
+        "kurulmuş ve e-posta bildirimiyle aktif edilmiştir:<br/>",
+        body_style
+    ))
+
+    # EKRAN GÖRÜNTÜSÜ: Bütçe Alarmı
+    budget_img = 'docs/screenshots/budget_alert.png'
+    if os.path.exists(budget_img):
+        story.append(Image(budget_img, width=470, height=195))
+        story.append(Paragraph("Şekil 3: Cloudflare Dashboard Bütçe Alarmı Ekran Görüntüsü (Tarih: 30.10.2026, Durum: Enabled)", caption_style))
+
+    story.append(Paragraph(
         "<b>Olay Müdahale Runbook'u:</b> 'API Anahtarım Sızdı' senaryosu için 6 adımlı (Tespit, İptal, Zarar Tespiti, Yenileme, İnceleme, Bildirim) "
-        "eylem planı <code>RUNBOOK.md</code> dosyasında hazırlanmıştır.<br/>"
-        "<b>Maliyet:</b> Cloudflare Workers Ücretsiz Katmanı ve GitHub Actions ile çalışılmaktadır. "
-        "<b>Maliyet: 0 TL'dir.</b> Cloudflare Bildirim & Bütçe alarmları aktiftir.",
+        "eylem planı <code>RUNBOOK.md</code> dosyasında hazırlanmıştır.",
         body_style
     ))
 
     doc.build(story, canvasmaker=NumberedCanvas)
-    print(f"Tam Donanımlı PDF Başarıyla Üretildi: {pdf_path}")
+    print(f"Bütün Kanıtları İçeren Tam PDF Başarıyla Üretildi: {pdf_path}")
 
 if __name__ == '__main__':
     generate_pdf()

@@ -214,7 +214,13 @@ Kanıt dosyaları:
 
 ---
 
-## 5. Güvenlik Test Sonuçları (OWASP ZAP)
+## 5. Güvenlik Test Sonuçları (SecurityHeaders A+ & OWASP ZAP)
+
+Canlı dağıtımımız bağımsız denetim aracı olan SecurityHeaders.com üzerinden test edilmiş ve tüm başlık kontrollerini geçerek **A+ Derecesi** almıştır:
+
+![SecurityHeaders A+ Skoru](docs/screenshots/securityheaders_A_plus.png)
+
+### OWASP ZAP Baseline Taraması ve Düzeltmeler
 
 Kendi canlı ürün adresimize (https://teknoloji-radari.muhammedeyupcatan.workers.dev) yapılan OWASP ZAP baseline taraması ve uygulanan düzeltmeler:
 
@@ -250,7 +256,9 @@ osniff başlığı tüm yanıtlara zorlandı | ✅ Düzeltildi |
 | GitHub Actions | Ücretsiz (2000 dk/ay) | **0 TL** |
 | **TOPLAM** | | **0 TL** |
 
-Bütçe alarmı: Cloudflare dashboard → **Notifications → Billing** alarmı kurulmuştur.
+Bütçe alarmı: Cloudflare dashboard → **Notifications → Billing** üzerinden 1 USD Bütçe Alarmı kurulmuş ve aktif edilmiştir.
+
+![Cloudflare Bütçe Alarmı](docs/screenshots/budget_alert.png)
 
 ---
 

@@ -87,6 +87,28 @@ npx wrangler deploy            # Cloudflare Workers'a deploy
 
 ---
 
+
+
+---
+
+## 📸 Doğrulama ve Güvenlik Kanıtları (Ekran Görüntüleri)
+
+### 1. SecurityHeaders.com Bağımsız Denetimi (A+ Skoru)
+Canlı URL: [https://teknoloji-radari.muhammedeyupcatan.workers.dev](https://teknoloji-radari.muhammedeyupcatan.workers.dev)  
+Sonuç: **A+ Derecesi** (Strict-Transport-Security, Content-Security-Policy, nosniff, DENY, Referrer-Policy, Permissions-Policy tam not aldı).
+
+![SecurityHeaders A+ Skoru](docs/screenshots/securityheaders_A_plus.png)
+
+### 2. Cloudflare Bütçe Alarmı (0 TL Maliyet Hedefi)
+Cloudflare Dashboard üzerinden **1 USD Bütçe Alarmı** aktif edilerek beklenmeyen maliyet riski sıfırlanmıştır.
+
+![Cloudflare Bütçe Alarmı](docs/screenshots/budget_alert.png)
+
+### 3. ReDoS Performans Kıyaslama Grafiği (Logaritmik Ölçek)
+29 karakterlik saldırı girdisinde korumasız sistem 4.292 ms kilitlenirken, güvenli mimari <0.05 ms sürede sonuçlandı.
+
+![ReDoS Performans Grafiği](tests/redos_comparison_chart.png)
+
 ## 📄 Dokümantasyon ve Teslim Dosyaları
 
 - [**security-report.pdf**](security-report.pdf): Akademik formatta tam Güvenlik ve Tehdit Raporu

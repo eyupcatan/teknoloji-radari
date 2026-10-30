@@ -43,3 +43,4 @@ plt.savefig(output_path)
 plt.close()
 
 print(f"Grafik üretildi: {output_path}")
+
